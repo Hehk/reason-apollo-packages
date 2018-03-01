@@ -10,22 +10,54 @@ type clientOptions = {
   "queryDeduplication": Js.boolean
 };
 
-[@bs.module "apollo-client"] [@bs.new] external _make : clientOptions => t = "ApolloClient";
+[@bs.module "apollo-client"] [@bs.new]
+external _make : clientOptions => t = "ApolloClient";
 
-let make = (~link, ~cache, ~ssrMode=false, ~ssrForceFetchDelay=0, ~connectToDevTools=?, ~queryDeduplication=true, ()) =>
+let make =
+    (
+      ~link,
+      ~cache,
+      ~ssrMode=false,
+      ~ssrForceFetchDelay=0,
+      ~connectToDevTools=?,
+      ~queryDeduplication=true,
+      ()
+    ) =>
   _make({
     "link": link,
     "cache": cache,
     "ssrMode": Js.Boolean.to_js_boolean(ssrMode),
     "ssrForceFetchDelay": ssrForceFetchDelay,
-    "connectToDevTools": Js.Nullable.from_opt(connectToDevTools),
+    "connectToDevTools": Js.Nullable.fromOption(connectToDevTools),
     "queryDeduplication": Js.Boolean.to_js_boolean(queryDeduplication)
   });
 
-/* The base public functions on an apollo client */
-[@bs.send.pipe : t] external watchQuery : unit => unit = "";
+type queryString;
 
-[@bs.send.pipe : t] external query : unit => unit = "";
+type queryObj = {
+  .
+  "query": queryString,
+  "variables": Js.Json.t
+};
+
+type graphqlError;
+
+type networkStatus;
+
+type queryResults('a) = {
+  .
+  "data": 'a,
+  "errors": Js.Nullable.t(graphqlError),
+  "loading": Js.boolean,
+  "networkStatus": networkStatus,
+  "stale": Js.boolean
+};
+
+/* The base public functions on an apollo client */
+[@bs.send.pipe : t] external query : queryObj => Js.Promise.t(queryResults('a)) = "";
+
+/* TODO: All functions after this point are just boilerplate, none will work */
+[@bs.send.pipe : t] external watchQuery : unit => unit = "";
 
 [@bs.send.pipe : t] external mutate : unit => unit = "";
 
