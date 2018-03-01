@@ -1,5 +1,5 @@
 {
-  "name": "reason-apollo-client",
+  "name": "reason-apollo-cache-inmemory",
   "version": "0.1.0",
   "scripts": {
     "build": "bsb -make-world",
@@ -9,15 +9,13 @@
   "keywords": [
     "BuckleScript"
   ],
-  "author": "kyle henderson <kyle1101000@gmail.com>",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^2.1.0"
   },
-  "description": "BuckleScript binding for Apollo Client written in ReasonML",
-  "main": "index.js",
   "dependencies": {
-    "apollo-client": "^2.2.5",
+    "apollo-cache-inmemory": "^1.1.9",
     "graphql": "^0.13.1"
   }
 }

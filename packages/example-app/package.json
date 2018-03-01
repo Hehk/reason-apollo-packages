@@ -1,0 +1,25 @@
+{
+  "name": "example-app",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world",
+    "test": "node lib/js/src/app.bs.js",
+    "webpack": "webpack --mode=development"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "bs-platform": "^2.1.0",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9"
+  },
+  "dependencies": {
+    "graphql": "^0.13.1",
+    "graphql-tag": "^2.8.0"
+  }
+}
