@@ -9,6 +9,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
+    "reason-zen-observable"
   ],
   "refmt": 3
 }

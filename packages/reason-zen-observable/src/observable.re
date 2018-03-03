@@ -15,7 +15,6 @@ module Subscription = {
 /*   [@bs.send.pipe : t('a)] external error : Js.Nullable.t('b => unit) = ""; */
 /*   [@bs.send.pipe : t('a)] external complete : Js.Nullable.t(unit => unit) = ""; */
 /* }; */
-
 module SubscriptionObserver = {
   type t('a);
   [@bs.send.pipe : t('a)] external closed : bool = "";

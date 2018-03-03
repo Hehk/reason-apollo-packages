@@ -18,6 +18,7 @@
   "main": "index.js",
   "dependencies": {
     "apollo-client": "^2.2.5",
+    "apollo-link": "^1.2.1",
     "graphql": "^0.13.1"
   }
 }
