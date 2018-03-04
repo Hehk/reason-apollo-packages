@@ -17,8 +17,9 @@
   "description": "BuckleScript binding for Apollo Client written in ReasonML",
   "main": "index.js",
   "dependencies": {
-    "apollo-client": "^2.2.5",
-    "apollo-link": "^1.2.1",
+    "apollo-client": "^2.2.5"
+  },
+  "peerDependencies": {
     "graphql": "^0.13.1"
   }
 }

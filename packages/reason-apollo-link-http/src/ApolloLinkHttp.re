@@ -1,3 +1,5 @@
+open ReasonApolloLink;
+
 type fetch;
 
 type options = {
@@ -10,24 +12,14 @@ type options = {
   "fetchOptions": Js.Nullable.t(Js.Json.t)
 };
 
-[@bs.module "apollo-link-http"]
-external _make : options => ApolloLink.t = "createHttpLink";
+[@bs.module "apollo-link-http"] external _make : options => ApolloLink.t = "createHttpLink";
 
-let make =
-    (
-      ~uri=?,
-      ~includeExtensions=?,
-      ~fetch=?,
-      ~header=?,
-      ~credentials=?,
-      ~fetchOptions=?,
-      ()
-    ) =>
+let make = (~uri=?, ~includeExtensions=?, ~fetch=?, ~header=?, ~credentials=?, ~fetchOptions=?, ()) =>
   _make({
-    "uri": Js.Nullable.from_opt(uri),
-    "includeExtensions": Js.Nullable.from_opt(includeExtensions),
-    "fetch": Js.Nullable.from_opt(fetch),
-    "headers": Js.Nullable.from_opt(header),
-    "credentials": Js.Nullable.from_opt(credentials),
-    "fetchOptions": Js.Nullable.from_opt(fetchOptions)
+    "uri": Js.Nullable.fromOption(uri),
+    "includeExtensions": Js.Nullable.fromOption(includeExtensions),
+    "fetch": Js.Nullable.fromOption(fetch),
+    "headers": Js.Nullable.fromOption(header),
+    "credentials": Js.Nullable.fromOption(credentials),
+    "fetchOptions": Js.Nullable.fromOption(fetchOptions)
   });

@@ -1,3 +1,5 @@
+
+open ReasonApolloLink;
 type t;
 
 type clientOptions = {

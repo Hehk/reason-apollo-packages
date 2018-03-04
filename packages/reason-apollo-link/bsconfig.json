@@ -1,5 +1,5 @@
 {
-  "name": "example-app",
+  "name": "reason-apollo-link",
   "version": "0.1.0",
   "sources": [
     "src"
@@ -9,10 +9,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "reason-apollo-client",
-    "reason-apollo-link",
-    "reason-apollo-link-http",
-    "reason-apollo-cache-inmemory"
+    "reason-zen-observable"
   ],
   "namespace": true,
   "refmt": 3

@@ -11,5 +11,6 @@
   "bs-dependencies": [
     "reason-apollo-client"
   ],
+  "namespace": true,
   "refmt": 3
 }

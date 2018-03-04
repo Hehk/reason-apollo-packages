@@ -1,3 +1,9 @@
+open ReasonApolloLink;
+
+open ReasonApolloCacheInmemory;
+
+open ReasonApolloClient;
+
 let cache = ApolloCacheInmemory.make();
 
 let httpLink = ApolloLinkHttp.make(~uri="http://localhost:5000/", ());
@@ -43,10 +49,7 @@ let query = {|
 
 [@bs.module] external gql : [@bs] (string => ApolloClient.queryString) = "graphql-tag";
 
-ApolloClient.query(
-  {"query": [@bs] gql(query), "variables": Js.Json.object_(Js.Dict.empty())},
-  client
-)
+ApolloClient.query({"query": [@bs] gql(query), "variables": Js.Json.object_(Js.Dict.empty())}, client)
 |> Js.Promise.then_(value => {
      Js.log2("resolved", value##data);
      Js.Promise.resolve();

@@ -9,7 +9,9 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "reason-zen-observable"
+    "reason-zen-observable",
+    "reason-apollo-link"
   ],
+  "namespace": true,
   "refmt": 3
 }

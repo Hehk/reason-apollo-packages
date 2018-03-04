@@ -15,7 +15,9 @@
     "bs-platform": "^2.1.0"
   },
   "dependencies": {
-    "apollo-link-http": "^1.5.2",
+    "apollo-link-http": "^1.5.2"
+  },
+  "peerDependencies": {
     "graphql": "^0.13.1"
   }
 }
