@@ -9,8 +9,8 @@ let cache = ApolloCacheInmemory.make();
 let httpLink = ApolloLinkHttp.make(~uri="http://localhost:5000/", ());
 
 let customLink =
-  ApolloLink.make((operation, forward) =>
-    ApolloLink.Operation.(
+  ApolloLink.make((~operation, ~forward, ()) =>
+    Operation.(
       switch forward {
       | None => None
       | Some(x) =>
@@ -21,11 +21,11 @@ let customLink =
   );
 
 let customLink2 =
-  ApolloLink.make((operation, forward) =>
+  ApolloLink.make((~operation, ~forward, ()) =>
     switch forward {
     | None => None
     | Some(x) =>
-      Js.log(ApolloLink.Operation.getContext(operation));
+      Js.log(Operation.getContext(operation));
       Some(x(operation));
     }
   );
