@@ -115,7 +115,6 @@ type mutationOptions = {
   "variables": Js.Nullable.t(variables)
 };
 
-/* TODO: All functions after this point are just boilerplate, none will work */
 [@bs.send.pipe : t] external mutate : mutationOptions => Js.Promise.t(Js.Json.t) = "";
 
 let mutate =
@@ -144,8 +143,18 @@ let mutate =
     )
   );
 
-[@bs.send.pipe : t] external subscribe : unit => unit = "";
+type subscriptionOption = {
+  .
+  "query": documentNode,
+  "variables": Js.Nullable.t(variables)
+};
 
+[@bs.send.pipe : t] external subscribe : subscriptionOption => Observable.t(Js.Json.t) = "";
+
+let subscription = (~query, ~variables=?) =>
+  subscribe({"query": query, "variables": Js.Nullable.fromOption(variables)});
+
+/* TODO: All functions after this point are just boilerplate, none will work */
 [@bs.send.pipe : t] external readQuery : unit => unit = "";
 
 [@bs.send.pipe : t] external readFragment : unit => unit = "";
