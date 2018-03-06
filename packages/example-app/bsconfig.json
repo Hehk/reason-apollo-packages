@@ -12,7 +12,8 @@
     "reason-apollo-client",
     "reason-apollo-link",
     "reason-apollo-link-http",
-    "reason-apollo-cache-inmemory"
+    "reason-apollo-cache-inmemory",
+    "reason-zen-observable"
   ],
   "namespace": true,
   "refmt": 3

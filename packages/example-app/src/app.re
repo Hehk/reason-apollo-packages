@@ -6,7 +6,8 @@ open ReasonApolloClient;
 
 let cache = ApolloCacheInmemory.make();
 
-let httpLink = ApolloLinkHttp.make(~uri="http://localhost:5000/", ());
+let httpLink =
+  ApolloLinkHttp.make(~uri="http://localhost:5000/", ());
 
 let customLink =
   ApolloLink.make((~operation, ~forward, ()) =>
@@ -14,7 +15,11 @@ let customLink =
       switch forward {
       | None => None
       | Some(x) =>
-        setContext(context => context |> Js.Obj.assign({"hello": "world"}), operation);
+        setContext(
+          context =>
+            context |> Js.Obj.assign({"hello": "world"}),
+          operation
+        );
         Some(x(operation));
       }
     )
@@ -30,7 +35,8 @@ let customLink2 =
     }
   );
 
-let link = ApolloLink.fromList([customLink, customLink2, httpLink]);
+let link =
+  ApolloLink.fromList([customLink, customLink2, httpLink]);
 
 let client = ApolloClient.make(~link, ~cache, ());
 
@@ -47,9 +53,16 @@ let query = {|
 }
 |};
 
-[@bs.module] external gql : [@bs] (string => ApolloClient.queryString) = "graphql-tag";
+[@bs.module]
+external gql : [@bs] (string => ApolloClient.queryString) =
+  "graphql-tag";
 
-ApolloClient.query({"query": [@bs] gql(query), "variables": Js.Json.object_(Js.Dict.empty())}, client)
+/* Using Query */
+ApolloClient.query(
+  ~query=[@bs] gql(query),
+  ~variables=Js.Json.object_(Js.Dict.empty()),
+  client
+)
 |> Js.Promise.then_(value => {
      Js.log2("resolved", value##data);
      Js.Promise.resolve();
@@ -58,3 +71,11 @@ ApolloClient.query({"query": [@bs] gql(query), "variables": Js.Json.object_(Js.D
      Js.log2("error", err);
      Js.Promise.resolve();
    });
+
+/* Using watchQuery */
+ApolloClient.watchQuery(
+  ~query=[@bs] gql(query),
+  ~variables=Js.Json.object_(Js.Dict.empty()),
+  client
+)
+|> ReasonZenObservable.Observable.forEach(x => Js.log2("observing:", x));
