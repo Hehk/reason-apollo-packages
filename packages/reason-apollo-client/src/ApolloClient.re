@@ -48,16 +48,20 @@ type queryResults('a) = {
   "stale": Js.boolean
 };
 
-type queryString;
+type documentNode;
 
-type fetchPolicy;
+type variables = Js.Json.t;
 
-type errorPolicy;
+type context = Js.Json.t;
+
+type fetchPolicy = Js.Json.t;
+
+type errorPolicy = Js.Json.t;
 
 type watchQueryOptions = {
   .
-  "query": queryString,
-  "variables": Js.Nullable.t(Js.Json.t),
+  "query": documentNode,
+  "variables": Js.Nullable.t(variables),
   "pollInterval": Js.Nullable.t(int),
   "fetchPolicy": Js.Nullable.t(fetchPolicy),
   "errorPolicy": Js.Nullable.t(errorPolicy),
@@ -89,7 +93,6 @@ let addWatchQueryNamedArguments =
     client
   );
 
-
 /* The base public functions on an apollo client */
 [@bs.send.pipe : t]
 external query : watchQueryOptions => Js.Promise.t(queryResults('a)) = "";
@@ -100,8 +103,46 @@ let query = addWatchQueryNamedArguments(query);
 
 let watchQuery = addWatchQueryNamedArguments(watchQuery);
 
+type mutationOptions = {
+  .
+  "mutation": documentNode,
+  "context": Js.Nullable.t(context),
+  "fetchPolicy": Js.Nullable.t(fetchPolicy),
+  "optimisticResponse": Js.Nullable.t(Js.Json.t),
+  "updateQueries": Js.Nullable.t(Js.Json.t),
+  "update": Js.Nullable.t(Js.Json.t),
+  "errorPolicy": Js.Nullable.t(errorPolicy),
+  "variables": Js.Nullable.t(variables)
+};
+
 /* TODO: All functions after this point are just boilerplate, none will work */
-[@bs.send.pipe : t] external mutate : unit => unit = "";
+[@bs.send.pipe : t] external mutate : mutationOptions => Js.Promise.t(Js.Json.t) = "";
+
+let mutate =
+    (
+      ~mutation,
+      ~context=?,
+      ~fetchPolicy=?,
+      ~optimisticResponse=?,
+      ~updateQueries=?,
+      ~update=?,
+      ~errorPolicy=?,
+      ~variables=?
+    ) =>
+  mutate(
+    Js.Nullable.(
+      {
+        "mutation": mutation,
+        "context": fromOption(context),
+        "fetchPolicy": fromOption(fetchPolicy),
+        "optimisticResponse": fromOption(optimisticResponse),
+        "updateQueries": fromOption(updateQueries),
+        "update": fromOption(update),
+        "errorPolicy": fromOption(errorPolicy),
+        "variables": fromOption(variables)
+      }
+    )
+  );
 
 [@bs.send.pipe : t] external subscribe : unit => unit = "";
 

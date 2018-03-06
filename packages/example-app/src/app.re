@@ -54,7 +54,7 @@ let query = {|
 |};
 
 [@bs.module]
-external gql : [@bs] (string => ApolloClient.queryString) =
+external gql : [@bs] (string => ApolloClient.documentNode) =
   "graphql-tag";
 
 /* Using Query */
