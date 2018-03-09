@@ -1,32 +1,59 @@
+open ReasonApolloClient;
+
+open ReasonReactApollo;
+
 let component = ReasonReact.statelessComponent("Page");
 
 let handleClick = (_event, _self) => Js.log("clicked!");
 
-let query = {|
-query getGengar {
-  pokemon(name: "Gengar") {
-    name
-    attacks {
-      fast {
-        name
+module GengarQuery = [%graphql
+  {|
+  query getGengar {
+    pokemon(name: "Gengar") {
+      name
+      attacks {
+        fast {
+          name
+        }
       }
     }
   }
-}
-|};
+  |}
+];
 
-[@bs.module]
-external gql : [@bs] (string => ReasonApolloClient.ApolloClient.documentNode) =
-  "graphql-tag";
+[@bs.module] external gql : [@bs] (string => ApolloClient.documentNode) = "graphql-tag";
 
-let componentMake = (~data: Js.Json.t, _children) => {
+let componentMake = (~data: GengarQuery.t, ~apolloStatus: Graphql.apolloStatus, _children) => {
   ...component,
-  render: self => {
-    Js.log(data);
-    <div onClick=(self.handle(handleClick))> (ReasonReact.stringToElement("rendered")) </div>
-  }
+  render: _self =>
+    if (apolloStatus.loading) {
+      <div> (ReasonReact.stringToElement("loading...")) </div>;
+    } else {
+      Js.log(data);
+      <div>
+        (
+          ReasonReact.stringToElement(
+            switch data##pokemon {
+            | None => "no pokemon"
+            | Some(pokemon) =>
+              Js.log(pokemon);
+              switch pokemon##name {
+              | None => "no pokemon"
+              | Some(x) => x
+              };
+            }
+          )
+        )
+      </div>;
+    }
 };
 
-let make = ReasonReactApollo.Graphql.make(~documentNode=([@bs] gql(query)), ~component, ~make=componentMake, ());
+let gengarQuery = GengarQuery.make();
 
-
+let make =
+  Graphql.make(
+    ~documentNode=[@bs] gql(gengarQuery##query),
+    ~component,
+    ~make=componentMake,
+    ()
+  );

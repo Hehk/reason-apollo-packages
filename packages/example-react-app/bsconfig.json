@@ -15,13 +15,16 @@
   "bs-dependencies": [
     "reason-react",
     "reason-apollo-client",
-     "reason-apollo-link",
+    "reason-apollo-link",
     "reason-apollo-link-http",
     "reason-apollo-cache-inmemory",
-   "reason-react-apollo"
+    "reason-react-apollo"
   ],
   "refmt": 3,
   "warnings": {
     "error": "+5"
-  }
+  },
+  "ppx-flags": [
+    "graphql_ppx/ppx"
+  ]
 }
