@@ -15,8 +15,10 @@ type apolloResponse('a) = {
 
 external castResponse : Js.t({..}) => Js.Json.t = "%identity";
 
-let make = (~documentNode, ~parse, ~component, ~make, ()) => {
-  let graphqlWrapper = graphql(documentNode);
+[@bs.module] external gql : [@bs] (string => ApolloClient.documentNode) = "graphql-tag";
+
+let make = (~query, ~parse=?, ~component, ~make, ()) => {
+  let graphqlWrapper = graphql([@bs] gql(query));
   let jsComponent =
     ReasonReact.wrapReasonForJs(
       ~component,
@@ -26,7 +28,14 @@ let make = (~documentNode, ~parse, ~component, ~make, ()) => {
           if (loading) {
             None;
           } else {
-            Some(parse(castResponse(props##data)));
+            /* Switch if you want to use a different parsing function other than
+               the default apollo one*/
+            Some(
+              switch parse {
+              | None => Obj.magic(props##data)
+              | Some(f) => f(castResponse(props##data))
+              }
+            );
           };
         let data = {
           variables: props##variables,
